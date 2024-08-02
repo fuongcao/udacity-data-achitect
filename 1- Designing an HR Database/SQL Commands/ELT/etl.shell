@@ -1,2 +1,0 @@
-echo "Load data to proj_stg table"
-psql -f ./StageTableLoad.sql
