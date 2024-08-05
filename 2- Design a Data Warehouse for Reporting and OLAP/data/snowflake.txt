@@ -1,0 +1,5 @@
+https://qp68623.ap-southeast-1.snowflakecomputing.com
+username: caohoaiphuong
+pass: xxFuongCao@xxxx
+
+snowsql -a qp68623.ap-southeast-1 -caohoaiphuong

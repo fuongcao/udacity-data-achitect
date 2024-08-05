@@ -10,15 +10,20 @@ In this project scenario, we will use the actual YELP and climate datasets in or
 
 #### 1. YELP DATA (https://www.yelp.com/dataset/download)
 
-- 1 .tgz file compressed, after uncompressed include:
-- 1 .pdf file and 5 .json files
+- 1 .tgz file compressed, after uncompressed includes: 1 .pdf file and 5 .json files.
+  1. [Dataset_User_Agreement.pdf](data/yelp_sample/Dataset_User_Agreement.pdf)
+  2. [yelp_academic_dataset_business.json](data/yelp_sample/yelp_academic_dataset_business.json)
+  3. [yelp_academic_dataset_checkin.json](data/yelp_sample/yelp_academic_dataset_checkin.json)
+  4. [yelp_academic_dataset_review.json](data/yelp_sample/yelp_academic_dataset_review.json)
+  5. [yelp_academic_dataset_tip.json](data/yelp_sample/yelp_academic_dataset_tip.json)
+  6. [yelp_academic_dataset_user.json](yelp_academic_dataset_user.json)
 
 #### 2. CLIMATE DATA
 
 The data files contain historical weather data for the city of Las Vegas (Nevada) (Weather Station - USW00023169), and were obtained from Climate Explorer(opens in a new tab).
 
-- **Precipitation Data**: [USW00023169-LAS VEGAS MCCARRAN INTL AP-PRECIPITATION-INCH](data/usw00023169-las-vegas-mccarran-intl-ap-precipitation-inch.csv)
-- **Temperature Data**: [USW00023169-TEMPERATURE-DEGREEF](data/usw00023169-temperature-degreef.csv)
+- **Precipitation Data**: [USW00023169-LAS VEGAS MCCARRAN INTL AP-PRECIPITATION-INCH](data/climate/usw00023169-las-vegas-mccarran-intl-ap-precipitation-inch.csv)
+- **Temperature Data**: [USW00023169-TEMPERATURE-DEGREEF](data/climate/usw00023169-temperature-degreef.csv)
 
 ### Project Instructions:
 
