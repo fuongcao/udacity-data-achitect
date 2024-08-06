@@ -36,3 +36,81 @@ The data files contain historical weather data for the city of Las Vegas (Nevada
 7. Draw a STAR schema for Data Warehouse (DWH) environment.
 8. Migration the data to the DWH.
 9. Query the DWH.
+
+####
+
+1. Data Architechure Diagram
+
+2. Staging environment schema in snowflake
+
+- snowsql command:
+
+```
+USE UDACITY;
+USE SCHEMA STAGING;
+```
+
+**Create json and csv File Format**
+
+```
+CREATE OR REPLACE FILE FORMAT mycsvformat type='CSV' ompression='auto' field_delimiter=',' record_delimiter = '\n' skip_header=1 error_on_column_count_mismatch=true null_if = ('NULL', 'null') empty_field_as_null = true;
+
+CREATE OR REPLACE FILE FORMAT myjsonformat type='JSON' strip_outer_array=true;
+```
+
+**Create STAGING AREAS**
+
+```
+CREATE OR REPLACE STAGE CLIMATE_DATA_STAGE file_format=mycsvformat;
+
+CREATE OR REPLACE STAGE YELP_DATA_STAGE file_format=myjsonformat;
+```
+
+create Staging table:
+
+```
+/ *Drop if exists* /
+DROP TABLE IF EXISTS STG_PRECIPITATION;
+DROP TABLE IF EXISTS STG_TEMPERATURE;
+
+DROP TABLE IF EXISTS STG_YELP_BUSINESS;
+DROP TABLE IF EXISTS STG_YELP_USER;
+DROP TABLE IF EXISTS STG_YELP_CHECKIN;
+DROP TABLE IF EXISTS STG_YELP_REVIEW;
+DROP TABLE IF EXISTS STG_YELP_TIP;
+DROP TABLE IF EXISTS STG_YELP_COVID;
+
+CREATE TABLE STG_PRECIPITATION ("DATE" STRING, "PRECIPITATION" STRING, "PREPICITATION_NORMAL" STRING);
+CREATE TABLE STG_TEMPERATURE ("DATE" STRING, "MIN" STRING, "MAX" STRING, "NORMAL_MIN" STRING, "NORMAL_MAX" STRING);
+
+CREATE TABLE STG_YELP_BUSINESS (BUSINES_INFO VARIANT);
+CREATE TABLE STG_YELP_USER (USER_INFO VARIANT);
+CREATE TABLE STG_YELP_CHECKIN (CHECKIN_INFO VARIANT);
+CREATE TABLE STG_YELP_REVIEW (REVIEW_INFO VARIANT);
+CREATE TABLE STG_YELP_TIP (TIP_INFO VARIANT);
+CREATE TABLE STG_YELP_COVID (COVID_INFO VARIANT);
+```
+
+**UPLOAD file to STAGING**
+
+```
+/ *Put the file from local to the staging area* /
+put file://climate/usw00023169-temperature-degreef.csv @climate_data_stage auto_compress=true;
+put file://climate/usw00023169-las-vegas-mccarran-intl-ap-precipitation-inch.csv @climate_data_stage auto_compress=true;
+
+put file://yelp_dataset/yelp_academic_dataset_business.json @yelp_data_stage auto_compress=true parallel=4;
+put file://yelp_dataset/yelp_academic_dataset_review.json @yelp_data_stage auto_compress=true parallel=4;
+put file://yelp_dataset/yelp_academic_dataset_checkin.json @yelp_data_stage auto_compress=true parallel=4;
+put file://yelp_dataset/yelp_academic_dataset_tip.json @yelp_data_stage auto_compress=true parallel=4;
+put file://yelp_dataset/yelp_academic_dataset_user.json @yelp_data_stage auto_compress=true parallel=4;
+
+put file://yelp_dataset/yelp_academic_dataset_covid_features.json @yelp_data_stage auto_compress=true parallel=4;
+```
+
+**LOAD file from STAGING to Table**
+
+```
+COPY INTO TEMPERATURES FROM @climate_data_stage/usw00023169-temperature-degreef.csv.gz file_format=mycsvformat ON_ERROR = 'CONTINUE' PURGE = TRUE;
+
+COPY INTO PRECIPITATIONS FROM @climate_data_stage/usw00023169-las-vegas-mccarran-intl-ap-precipitation-inch.csv.gz file_format=mycsvformat ON_ERROR = 'CONTINUE' PURGE = TRUE;
+```
