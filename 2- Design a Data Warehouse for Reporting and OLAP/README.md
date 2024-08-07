@@ -10,7 +10,7 @@ In this project scenario, we will use the actual YELP and climate datasets in or
 
 #### 1. YELP DATA (https://www.yelp.com/dataset/download)
 
-- 1 .tgz file compressed, after uncompressed includes: 1 .pdf file and 5 .json files.
+- One .tgz file compressed, after uncompressed includes: 1 .pdf file and 5 .json files.
   1. [Dataset_User_Agreement.pdf](data/yelp_sample/Dataset_User_Agreement.pdf)
   2. [yelp_academic_dataset_business.json](data/yelp_sample/yelp_academic_dataset_business.json)
   3. [yelp_academic_dataset_checkin.json](data/yelp_sample/yelp_academic_dataset_checkin.json)
@@ -18,121 +18,69 @@ In this project scenario, we will use the actual YELP and climate datasets in or
   5. [yelp_academic_dataset_tip.json](data/yelp_sample/yelp_academic_dataset_tip.json)
   6. [yelp_academic_dataset_user.json](yelp_academic_dataset_user.json)
 
-#### 2. CLIMATE DATA
+#### 2. COVID-19 Dataset (https://www.kaggle.com/datasets/claudiadodge/yelp-academic-data-set-covid-features)
+
+- One json file. [yelp_academic_dataset_covid_features.json](data/yelp_sample/yelp_academic_dataset_covid_features.json)
+
+#### 3. CLIMATE DATA
 
 The data files contain historical weather data for the city of Las Vegas (Nevada) (Weather Station - USW00023169), and were obtained from Climate Explorer(opens in a new tab).
 
 - **Precipitation Data**: [USW00023169-LAS VEGAS MCCARRAN INTL AP-PRECIPITATION-INCH](data/climate/usw00023169-las-vegas-mccarran-intl-ap-precipitation-inch.csv)
 - **Temperature Data**: [USW00023169-TEMPERATURE-DEGREEF](data/climate/usw00023169-temperature-degreef.csv)
 
-### Project Instructions:
-
-1. Create a data architechure digram.
-2. Create a Staging environment schema in snowflake.
-3. Upload all YELP and CLIMATE data to the STAGING environment.
-4. Create an OSD environment schema.
-5. Draw an entity-relationship (ER) diagram.
-6. Migrate the data into ODS environment.
-7. Draw a STAR schema for Data Warehouse (DWH) environment.
-8. Migration the data to the DWH.
-9. Query the DWH.
-
 ### Data Architechure Diagram
 
-![data_architecture_diagram](images/data_architecture_diagram.png)
+![data_architecture_diagram](images/data_architecture.png)
 
-#### 1. Create DATABASE, SCHEMA for STAGING, ODS, DWH [create_database.sql](./SqlCommands/create_database.sql)
+### Create DATABASE, SCHEMA for STAGING, ODS, DWH
 
-```
--- create UDACITY database for this project
-CREATE OR REPLACE DATABASE UDACITY;
+Refer to [create_database.sql](./SqlCommands/create_database.sql)
 
--- create STAGING schema
-CREATE OR REPLACE SCHEMA STAGING;
+## 1. Staging
 
--- create ODS (Operational Data store) schema
-CREATE OR REPLACE SCHEMA ODS;
+![staging_erd](images/staging/staging_erd.png)
 
--- create DWH (Data Warehouse) schema
-CREATE OR REPLACE SCHEMA DWH;
+1. Create json and csv File Format
+2. Create stage areas
+3. create stage tables
+4. UPLOAD file to stage Areas
+5. LOAD file from STAGES to Tables
 
-```
+Refer to [load_data_to_staging.sql](./SqlCommands/load_data_to_staging.sql)
 
-#### 2. Staging environment schema in snowflake [load_data_to_staging.sql](./SqlCommands/load_data_to_staging.sql)
+**Stage areas**
+![stage_climate.png](images/staging/stage_climate.png)
+![stage_yelp.png](images/staging/stage_yelp.png)
 
-```
-USE DATABASE UDACITY;
-USE SCHEMA STAGING;
-```
+**Staging tables on Snowflake**
 
-**Create json and csv File Format**
+![staging_tables.png](images/staging/staging_tables.png)
 
-```
-CREATE OR REPLACE FILE FORMAT mycsvformat
-TYPE = 'CSV'
-COMPRESSION = 'auto'
-FIELD_DELIMITER = ','
-RECORD_DELIMITER = '\n'
-SKIP_HEADER = 1
-ERROR_ON_COLUMN_COUNT_MISMATCH = true
-NULL_IF = ('NULL', 'null')
-EMPTY_FIELD_AS_NULL = true;
+## 2. Operational Data Store
 
-CREATE OR REPLACE FILE FORMAT myjsonformat type='JSON' strip_outer_array=true;
-```
+![ods_erd](images/ods/ods_erd.png)
 
-**Create stage areas**
+LOAD data from stage to ODS refer to [load_stage_to_ods.sql](./SqlCommands/load_stage_to_ods.sql)
 
-```
-CREATE OR REPLACE STAGE CLIMATE_DATA_STAGE file_format=mycsvformat;
+**ODS tables on Snowflake**
+![ods_tables](images/ods/ods_tables.png)
 
-CREATE OR REPLACE STAGE YELP_DATA_STAGE file_format=myjsonformat;
-```
+**ODS data**
+![ods_sample_data](images/ods/ods_sample_data.png)
 
-**create stage tables**
+## 3. Data Warehouse
 
-```
-/ *Drop if exists* /
-DROP TABLE IF EXISTS STG_TEMPERATURE;
-DROP TABLE IF EXISTS STG_PRECIPITATION;
+![dwh_erd](images/dwh/dwh_erd.png)
 
-DROP TABLE IF EXISTS STG_YELP_BUSINESS;
-DROP TABLE IF EXISTS STG_YELP_USER;
-DROP TABLE IF EXISTS STG_YELP_CHECKIN;
-DROP TABLE IF EXISTS STG_YELP_REVIEW;
-DROP TABLE IF EXISTS STG_YELP_TIP;
-DROP TABLE IF EXISTS STG_YELP_COVID;
+LOAD data from ODS to DWH refer to [load_ods_to_dwh.sql](./SqlCommands/load_ods_to_dwh.sql)
 
-CREATE TABLE STG_TEMPERATURE ("DATE" STRING, "MIN" STRING, "MAX" STRING, "NORMAL_MIN" STRING, "NORMAL_MAX" STRING);
-CREATE TABLE STG_PRECIPITATION ("DATE" STRING, "PRECIPITATION" STRING, "PREPICITATION_NORMAL" STRING);
+**DWH tables on Snowflake**
+![![ods_tables](images/dwh/dwh_tables.png)](images/dwh/dwh_tables.png)
 
-CREATE TABLE STG_YELP_BUSINESS (BUSINES_INFO VARIANT);
-CREATE TABLE STG_YELP_USER (USER_INFO VARIANT);
-CREATE TABLE STG_YELP_CHECKIN (CHECKIN_INFO VARIANT);
-CREATE TABLE STG_YELP_REVIEW (REVIEW_INFO VARIANT);
-CREATE TABLE STG_YELP_TIP (TIP_INFO VARIANT);
-CREATE TABLE STG_YELP_COVID (COVID_INFO VARIANT);
-```
+**DWH data**
+![dwh_sample_data](images/dwh/dwh_sample_data.png)
 
-**UPLOAD file to STAGING**
+**Report that clearly includes business name, temperature, precipitation, and ratings.** refer to [report.sql](./SqlCommands/report.sql)
 
-```
-/ *Put the file from local to the staging area* /
-put file://climate/usw00023169-temperature-degreef.csv @climate_data_stage auto_compress=true;
-put file://climate/usw00023169-las-vegas-mccarran-intl-ap-precipitation-inch.csv @climate_data_stage auto_compress=true;
-
-put file://yelp_dataset/yelp_academic_dataset_business.json @yelp_data_stage auto_compress=true parallel=4;
-put file://yelp_dataset/yelp_academic_dataset_review.json @yelp_data_stage auto_compress=true parallel=4;
-put file://yelp_dataset/yelp_academic_dataset_checkin.json @yelp_data_stage auto_compress=true parallel=4;
-put file://yelp_dataset/yelp_academic_dataset_tip.json @yelp_data_stage auto_compress=true parallel=4;
-put file://yelp_dataset/yelp_academic_dataset_user.json @yelp_data_stage auto_compress=true parallel=4;
-put file://yelp_dataset/yelp_academic_dataset_covid_features.json @yelp_data_stage auto_compress=true parallel=4;
-```
-
-**LOAD file from STAGES to Tables**
-
-```
-COPY INTO TEMPERATURES FROM @climate_data_stage/usw00023169-temperature-degreef.csv.gz file_format=mycsvformat ON_ERROR = 'CONTINUE';
-
-COPY INTO PRECIPITATIONS FROM @climate_data_stage/usw00023169-las-vegas-mccarran-intl-ap-precipitation-inch.csv.gz file_format=mycsvformat ON_ERROR = 'CONTINUE';
-```
+![report_data.sql](./images/dwh/report_data.png)
