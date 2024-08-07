@@ -37,28 +37,51 @@ The data files contain historical weather data for the city of Las Vegas (Nevada
 8. Migration the data to the DWH.
 9. Query the DWH.
 
-####
+### Data Architechure Diagram
 
-1. Data Architechure Diagram
+![data_architecture_diagram](images/data_architecture_diagram.png)
 
-2. Staging environment schema in snowflake
-
-- snowsql command:
+#### 1. Create DATABASE, SCHEMA for STAGING, ODS, DWH [create_database.sql](./SqlCommands/create_database.sql)
 
 ```
-USE UDACITY;
+-- create UDACITY database for this project
+CREATE OR REPLACE DATABASE UDACITY;
+
+-- create STAGING schema
+CREATE OR REPLACE SCHEMA STAGING;
+
+-- create ODS (Operational Data store) schema
+CREATE OR REPLACE SCHEMA ODS;
+
+-- create DWH (Data Warehouse) schema
+CREATE OR REPLACE SCHEMA DWH;
+
+```
+
+#### 2. Staging environment schema in snowflake [load_data_to_staging.sql](./SqlCommands/load_data_to_staging.sql)
+
+```
+USE DATABASE UDACITY;
 USE SCHEMA STAGING;
 ```
 
 **Create json and csv File Format**
 
 ```
-CREATE OR REPLACE FILE FORMAT mycsvformat type='CSV' ompression='auto' field_delimiter=',' record_delimiter = '\n' skip_header=1 error_on_column_count_mismatch=true null_if = ('NULL', 'null') empty_field_as_null = true;
+CREATE OR REPLACE FILE FORMAT mycsvformat
+TYPE = 'CSV'
+COMPRESSION = 'auto'
+FIELD_DELIMITER = ','
+RECORD_DELIMITER = '\n'
+SKIP_HEADER = 1
+ERROR_ON_COLUMN_COUNT_MISMATCH = true
+NULL_IF = ('NULL', 'null')
+EMPTY_FIELD_AS_NULL = true;
 
 CREATE OR REPLACE FILE FORMAT myjsonformat type='JSON' strip_outer_array=true;
 ```
 
-**Create STAGING AREAS**
+**Create stage areas**
 
 ```
 CREATE OR REPLACE STAGE CLIMATE_DATA_STAGE file_format=mycsvformat;
@@ -66,12 +89,12 @@ CREATE OR REPLACE STAGE CLIMATE_DATA_STAGE file_format=mycsvformat;
 CREATE OR REPLACE STAGE YELP_DATA_STAGE file_format=myjsonformat;
 ```
 
-create Staging table:
+**create stage tables**
 
 ```
 / *Drop if exists* /
-DROP TABLE IF EXISTS STG_PRECIPITATION;
 DROP TABLE IF EXISTS STG_TEMPERATURE;
+DROP TABLE IF EXISTS STG_PRECIPITATION;
 
 DROP TABLE IF EXISTS STG_YELP_BUSINESS;
 DROP TABLE IF EXISTS STG_YELP_USER;
@@ -80,8 +103,8 @@ DROP TABLE IF EXISTS STG_YELP_REVIEW;
 DROP TABLE IF EXISTS STG_YELP_TIP;
 DROP TABLE IF EXISTS STG_YELP_COVID;
 
-CREATE TABLE STG_PRECIPITATION ("DATE" STRING, "PRECIPITATION" STRING, "PREPICITATION_NORMAL" STRING);
 CREATE TABLE STG_TEMPERATURE ("DATE" STRING, "MIN" STRING, "MAX" STRING, "NORMAL_MIN" STRING, "NORMAL_MAX" STRING);
+CREATE TABLE STG_PRECIPITATION ("DATE" STRING, "PRECIPITATION" STRING, "PREPICITATION_NORMAL" STRING);
 
 CREATE TABLE STG_YELP_BUSINESS (BUSINES_INFO VARIANT);
 CREATE TABLE STG_YELP_USER (USER_INFO VARIANT);
@@ -103,14 +126,13 @@ put file://yelp_dataset/yelp_academic_dataset_review.json @yelp_data_stage auto_
 put file://yelp_dataset/yelp_academic_dataset_checkin.json @yelp_data_stage auto_compress=true parallel=4;
 put file://yelp_dataset/yelp_academic_dataset_tip.json @yelp_data_stage auto_compress=true parallel=4;
 put file://yelp_dataset/yelp_academic_dataset_user.json @yelp_data_stage auto_compress=true parallel=4;
-
 put file://yelp_dataset/yelp_academic_dataset_covid_features.json @yelp_data_stage auto_compress=true parallel=4;
 ```
 
-**LOAD file from STAGING to Table**
+**LOAD file from STAGES to Tables**
 
 ```
-COPY INTO TEMPERATURES FROM @climate_data_stage/usw00023169-temperature-degreef.csv.gz file_format=mycsvformat ON_ERROR = 'CONTINUE' PURGE = TRUE;
+COPY INTO TEMPERATURES FROM @climate_data_stage/usw00023169-temperature-degreef.csv.gz file_format=mycsvformat ON_ERROR = 'CONTINUE';
 
-COPY INTO PRECIPITATIONS FROM @climate_data_stage/usw00023169-las-vegas-mccarran-intl-ap-precipitation-inch.csv.gz file_format=mycsvformat ON_ERROR = 'CONTINUE' PURGE = TRUE;
+COPY INTO PRECIPITATIONS FROM @climate_data_stage/usw00023169-las-vegas-mccarran-intl-ap-precipitation-inch.csv.gz file_format=mycsvformat ON_ERROR = 'CONTINUE';
 ```
