@@ -5,3 +5,11 @@ Medical Data Processing Company, based out of San Francisco, specializes in proc
 The company has experienced hyper growth over the past 3 years. However, as the volume of data continues to grow, the existing infrastructure has not been able to scale. The company has made every type of optimization, configuration changes, and hardware updates, but it has not helped significantly in terms of performance and scale.
 
 Last week, there was a surge in data, during the nightly ETL process, the database server crashed and the whole system was offline for several hours. The CTO has hired you to evaluate if building a Data Lake makes sense to solve the company’s challenges. You are expected to provide a detailed Data Lake design and rationale behind your design decisions.
+
+### 1. Network Diagram
+
+### 2. Design Document
+
+### 3. Slide Show
+
+### 4. Recorded Presentation
