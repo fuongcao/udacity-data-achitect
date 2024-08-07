@@ -1,3 +1,42 @@
-{"business_id":"1nmbQ29R9BeN6NDPUl8Lvw","name":"Fitzgerald Gerald Joseph DO","address":"12464 Indian Rocks Rd","city":"Largo","state":"FL","postal_code":"33774","latitude":27.8864879,"longitude":-82.8329132,"stars":3.0,"review_count":9,"is_open":1,"attributes":null,"categories":"Doctors, Health & Medical","hours":null}
-{"business_id":"iay91CweEOzRIW6wjcOjuA","name":"Truc Lam","address":"3737 Gravois Ave","city":"Saint Louis","state":"MO","postal_code":"63116","latitude":38.5919774,"longitude":-90.2479716,"stars":4.5,"review_count":170,"is_open":1,"attributes":{"RestaurantsAttire":"u'casual'","GoodForKids":"True","OutdoorSeating":"False","RestaurantsGoodForGroups":"True","WiFi":"u'no'","RestaurantsTakeOut":"True","HasTV":"False","RestaurantsPriceRange2":"1","Caters":"False","BikeParking":"False","RestaurantsReservations":"False","RestaurantsDelivery":"False","BusinessAcceptsCreditCards":"True","NoiseLevel":"u'quiet'","Alcohol":"u'beer_and_wine'","GoodForMeal":"{'dessert': False, 'latenight': False, 'lunch': True, 'dinner': True, 'brunch': False, 'breakfast': False}","Ambience":"{'touristy': False, 'hipster': False, 'romantic': False, 'divey': None, 'intimate': False, 'trendy': False, 'upscale': False, 'classy': False, 'casual': True}","BusinessParking":"{'garage': False, 'street': True, 'validated': False, 'lot': True, 'valet': False}"},"categories":"Restaurants, Vietnamese","hours":{"Monday":"10:0-21:0","Tuesday":"10:0-21:0","Thursday":"10:0-21:0","Friday":"10:0-21:0","Saturday":"10:0-21:0","Sunday":"10:0-21:0"}}
-{"business_id":"1qGj9-15Lj5Wn8igQQkS_w","name":"All Saints-by-the-Sea Episcopal Church","address":"83 Eucalyptus Ln","city":"Santa Barbara","state":"CA","postal_code":"93108","latitude":34.4210393,"longitude":-119.6314612,"stars":4.0,"review_count":6,"is_open":1,"attributes":null,"categories":"Religious Organizations, Churches","hours":{"Sunday":"10:0-11:30"}}
+{
+  "business_id": "iay91CweEOzRIW6wjcOjuA",
+  "name": "Truc Lam",
+  "address": "3737 Gravois Ave",
+  "city": "Saint Louis",
+  "state": "MO",
+  "postal_code": "63116",
+  "latitude": 38.5919774,
+  "longitude": -90.2479716,
+  "stars": 4.5,
+  "review_count": 170,
+  "is_open": 1,
+  "attributes": {
+    "RestaurantsAttire": "u'casual'",
+    "GoodForKids": "True",
+    "OutdoorSeating": "False",
+    "RestaurantsGoodForGroups": "True",
+    "WiFi": "u'no'",
+    "RestaurantsTakeOut": "True",
+    "HasTV": "False",
+    "RestaurantsPriceRange2": "1",
+    "Caters": "False",
+    "BikeParking": "False",
+    "RestaurantsReservations": "False",
+    "RestaurantsDelivery": "False",
+    "BusinessAcceptsCreditCards": "True",
+    "NoiseLevel": "u'quiet'",
+    "Alcohol": "u'beer_and_wine'",
+    "GoodForMeal": "{'dessert': False, 'latenight': False, 'lunch': True, 'dinner': True, 'brunch': False, 'breakfast': False}",
+    "Ambience": "{'touristy': False, 'hipster': False, 'romantic': False, 'divey': None, 'intimate': False, 'trendy': False, 'upscale': False, 'classy': False, 'casual': True}",
+    "BusinessParking": "{'garage': False, 'street': True, 'validated': False, 'lot': True, 'valet': False}"
+  },
+  "categories": "Restaurants, Vietnamese",
+  "hours": {
+    "Monday": "10:0-21:0",
+    "Tuesday": "10:0-21:0",
+    "Thursday": "10:0-21:0",
+    "Friday": "10:0-21:0",
+    "Saturday": "10:0-21:0",
+    "Sunday": "10:0-21:0"
+  }
+}
