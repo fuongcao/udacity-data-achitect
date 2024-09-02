@@ -83,7 +83,7 @@ data or extract the data
 
 ● Ad-hoc data analytics, interactive querying capability using SQL
 
-### Project Submisstion
+### 3. Project Submisstion
 
 #### 1. Datalake Architecture Diagram
 
