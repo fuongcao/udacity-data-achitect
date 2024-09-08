@@ -31,3 +31,11 @@ Building out an Enterprise Data Warehouse solution to replace the existing legac
 5. Sketch out a proposed MDM implementation architecture, and write a detailed explanation of the reason for the chosing this specific approach base on SneakerPark’s systems and business model.
 6. Define a set of matching rules that will be used by SneakerPark's MDM Hub to match item and customer entities between the company's different systems.
 7. Write a paragraph discussing what data governance roles and responsibilities will be necessary to oversee this new Data Management initiative.
+
+### The systems that SneakerPark relies on for its day-to-day operations are:
+
+1. **User Service** - allow buyer and seller to register an account with sneakerpark.com.
+2. **Inventory Management Service** - keep track of the current invetory od sneakers in the wareshouse.
+3. **Listing Service** - allow seller to create listing once their items have been approved.
+4. **Order Processing Service** - processes orders and stores order details.
+5. **Customer Services Appliaction** - record customer support request information from customer service calls and emails.
